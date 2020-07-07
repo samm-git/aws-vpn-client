@@ -1,7 +1,7 @@
 # aws-vpn-client
 
 This is PoC to connect to the AWS Client VPN with OSS OpenVPN using SAML
-authentication.
+authentication. Tested on macOS, should also work on Linux with a minor changes.
 
 ## Content of the repository
 
@@ -12,4 +12,12 @@ SAML Post data to the file
 
 ## How to use
 
-TODO
+1. Build patched openvpn version and put it to the folder with a script
+1. Start HTTP server with `go run server.go`
+1. Set VPN_HOST in the [aws-connect.sh](aws-connect.sh)
+1. Replace CA section in the sample [vpn.conf](vpn.conf) with one from your AWS configuration
+1. Finally run `aws-connect.sh` to connect to the AWS.
+
+## Todo
+
+Better integrate SAML HTTP server with a script or rewrite everything on golang
