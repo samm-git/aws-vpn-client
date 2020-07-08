@@ -1,7 +1,9 @@
 # aws-vpn-client
 
 This is PoC to connect to the AWS Client VPN with OSS OpenVPN using SAML
-authentication. Tested on macOS, should also work on Linux with a minor changes.
+authentication. Tested on macOS, should also work on FreeBSD/Linux with a minor changes.
+
+See [my blog post](https://smallhacks.wordpress.com/2020/07/08/aws-client-vpn-internals/) for the implementation details.
 
 ## Content of the repository
 
