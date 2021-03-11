@@ -22,6 +22,13 @@ SAML Post data to the file
 1. Replace CA section in the sample [vpn.conf](vpn.conf) with one from your AWS configuration
 1. Finally run `aws-connect.sh` to connect to the AWS.
 
+### Additional Steps
+
+Inspect your ovpn config and remove the following lines if present
+- auth-user-pass
+- auth-federate
+- auth-retry interact
+
 ## Todo
 
 Better integrate SAML HTTP server with a script or rewrite everything on golang
