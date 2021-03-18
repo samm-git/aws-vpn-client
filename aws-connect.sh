@@ -35,7 +35,13 @@ OVPN_OUT=$($OVPN_BIN --config "${OVPN_CONF}" --verb 3 \
 
 echo "Opening browser and wait for the response file..."
 URL=$(echo "$OVPN_OUT" | grep -Eo 'https://.+')
-open "$URL"
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     xdg-open "$URL";;
+    Darwin*)    open "$URL";;
+    *)          echo "Could not determine 'open' command for this OS"; exit 1;;
+esac
 
 wait_file "saml-response.txt" 30 || {
   echo "SAML Authentication time out"
