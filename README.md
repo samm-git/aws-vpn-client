@@ -28,7 +28,7 @@ Inspect your ovpn config and remove the following lines if present
 - `auth-user-pass` (propietary AWS keyword)
 - `auth-federate` (propietary AWS keyword)
 - `auth-retry interact` (propietary AWS keyword)
-- `remote` (already handled in CLI and can cause conflicts with it)
+- `remote` and `remote-random-hostname` (already handled in CLI and can cause conflicts with it)
 
 ## Todo
 
