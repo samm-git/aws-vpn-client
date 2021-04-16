@@ -126,9 +126,18 @@ index f3cafeaf..973aa066 100644
  extern const char title_string[];
  
 diff --git a/src/openvpn/ssl.c b/src/openvpn/ssl.c
-index cf668998..1c14ecf3 100644
+index cf668998..2473671e 100644
 --- a/src/openvpn/ssl.c
 +++ b/src/openvpn/ssl.c
+@@ -2157,7 +2157,7 @@ key_state_soft_reset(struct tls_session *session)
+ static bool
+ write_empty_string(struct buffer *buf)
+ {
+-    if (!buf_write_u16(buf, 0))
++    if (!buf_write_u32(buf, 0))
+     {
+         return false;
+     }
 @@ -2172,7 +2172,7 @@ write_string(struct buffer *buf, const char *str, const int maxlen)
      {
          return false;
