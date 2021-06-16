@@ -2,13 +2,67 @@
 
 set -e
 
-# replace with your hostname
-VPN_HOST="cvpn-endpoint-<id>.prod.clientvpn.us-east-1.amazonaws.com"
-# path to the patched openvpn
-OVPN_BIN="./openvpn"
-# path to the configuration file
-OVPN_CONF="vpn.conf"
-PORT=1194
+print_help() {
+    cat << EOF
+Usage: aws-connect [options]
+
+OPTIONS
+  -h, --host                     AWS VPN Endpoint host
+  -p, --port                     AWS VPN Endpoint port
+  -c, --config-path              OpenVPN config path
+  -b, --openvpn-binary-path      OpenVPN patched binary path
+EOF
+}
+
+if [[ $# -eq 0 ]]; then
+    echo "Please supply arguments."
+    print_help
+    exit
+fi
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+
+    case $arg in
+        -h|--host)
+            VPN_HOST="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        -p|--port)
+            PORT="$2"
+            shift
+            shift
+            ;;
+        -c|--config-path)
+            OVPN_CONF="$2"
+            shift
+            shift
+            ;;
+        -b|--openvpn-binary-path)
+            OVPN_BIN="$2"
+            shift
+            shift
+            ;;
+        *) # unknown option
+            POSITIONAL+=("$1") # save it in an array for later
+            shift
+            ;;
+    esac
+done
+
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+OPTIONS=("$VPN_HOST" "$PORT" "$OVPN_CONF" "$OVPN_BIN")
+
+for arg_value in "${OPTIONS[@]}"; do
+    if test -z "${arg_value}"; then
+        print_help
+        exit
+    fi
+done
+
 PROTO=udp
 
 wait_file() {
