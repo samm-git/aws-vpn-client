@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -59,5 +59,5 @@ sudo bash -c "$OVPN_BIN --config "${OVPN_CONF}" \
     --verb 3 --auth-nocache --inactive 3600 \
     --proto "$PROTO" --remote $SRV $PORT \
     --script-security 2 \
-    --route-up '/bin/rm saml-response.txt' \
+    --route-up '/usr/bin/env rm saml-response.txt' \
     --auth-user-pass <( printf \"%s\n%s\n\" \"N/A\" \"CRV1::${VPN_SID}::$(cat saml-response.txt)\" )"
