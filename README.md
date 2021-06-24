@@ -5,6 +5,8 @@ authentication. Tested on macOS and Linux, should also work on other POSIX OS wi
 
 See [my blog post](https://smallhacks.wordpress.com/2020/07/08/aws-client-vpn-internals/) for the implementation details.
 
+P.S. Recently [AWS released Linux desktop client](https://aws.amazon.com/about-aws/whats-new/2021/06/aws-client-vpn-launches-desktop-client-for-linux/), however, it is currently available only for Ubuntu, using Mono and is closed source. 
+
 ## Content of the repository
 
 - [openvpn-v2.4.9-aws.patch](openvpn-v2.4.9-aws.patch) - patch required to build
