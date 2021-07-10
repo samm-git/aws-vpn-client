@@ -1,3 +1,5 @@
+## Note: AWS has now official released a [VPN Client for Linux Ubuntu (18.04 and 20.04)](https://aws.amazon.com/about-aws/whats-new/2021/06/aws-client-vpn-launches-desktop-client-for-linux/). For running on Fedora, here's a [clue](https://serverfault.com/a/1067805/539146).
+
 # aws-vpn-client
 
 This is PoC to connect to the AWS Client VPN with OSS OpenVPN using SAML
