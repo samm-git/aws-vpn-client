@@ -28,8 +28,8 @@ SAML Post data to the file
 
 Inspect your ovpn config and remove the following lines if present
 - `auth-user-pass` (we dont want to show user prompt)
-- `auth-federate` (do not retry on failures)
-- `auth-retry interact` (propietary AWS keyword)
+- `auth-federate` (propietary AWS keyword)
+- `auth-retry interact` (do not retry on failures)
 - `remote` and `remote-random-hostname` (already handled in CLI and can cause conflicts with it)
 
 ## Todo
