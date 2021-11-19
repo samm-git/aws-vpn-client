@@ -18,11 +18,17 @@ SAML Post data to the file
 
 ## How to use
 
-1. Build patched openvpn version and put it to the folder with a script
-1. Start HTTP server with `go run server.go`
-1. Set VPN_HOST in the [aws-connect.sh](aws-connect.sh)
+1. Build patched openvpn version
 1. Replace CA section in the sample [vpn.conf](vpn.conf) with one from your AWS configuration
-1. Finally run `aws-connect.sh` to connect to the AWS.
+1. Finally run `aws-connect.sh` to connect to the AWS:
+
+```console
+./aws-connect.sh \
+    --host cvpn-endpoint-$id.prod.clientvpn.us-east-1.amazonaws.com \
+    --port 443 \
+    --config-path ~/.aws-vpn-client/vpn.conf \
+    --openvpn-binary-path $(which openvpn)
+```
 
 ### Additional Steps
 
