@@ -28,7 +28,7 @@ func main() {
 		{
 			Name:    "setup",
 			Aliases: []string{"build"},
-			Usage:   "Compiles openvpn for your unix enviroment and checking if baseline dependancies are installed.",
+			Usage:   "Compiles openvpn for your unix environment and checking if baseline dependencies are installed.",
 			Action:  setupAction,
 			Flags: []cli.Flag{
 				&cli.StringFlag{

@@ -145,13 +145,13 @@ func startOpenVPNConnection(handle *serveHandle) {
 	log.Info().Msg("Waiting for SAML response from 3rd party service...")
 	SAMLResponse := <-handle.SAMLResponse
 
-	log.Info().Msg("Recived SAML response! Attempting to start OpenVPN client tunnel...")
+	log.Info().Msg("Received SAML response! Attempting to start OpenVPN client tunnel...")
 
 	// Save auth file for openvpn
 	SID, err := extractSIDFromOpenVPN(string(out))
 
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed finding SID in inital handshake! Please enable DEBUG mode to see payload. " + errorSuffix)
+		log.Fatal().Err(err).Msg("Failed finding SID in initial handshake! Please enable DEBUG mode to see payload. " + errorSuffix)
 	}
 
 	tmpAuthConifg, err = saveOpenVPNAuthConfig(handle.TempDir, "CRV1::"+SID+"::"+url.QueryEscape(SAMLResponse))
@@ -192,7 +192,6 @@ func startOpenVPNConnection(handle *serveHandle) {
 		shellCommand.Stdout = os.Stdout
 		shellCommand.Stderr = os.Stderr
 		shellCommand.Stdin = os.Stdin
-		shellCommand.Dir, _ = os.Getwd()
 
 		log.Debug().Str("command", shellCommand.String()).Msg("Executing OpenVPN tunnel in shell.")
 
@@ -200,7 +199,7 @@ func startOpenVPNConnection(handle *serveHandle) {
 	}
 
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed starting OpenVPN tunne! " + errorSuffix)
+		log.Fatal().Err(err).Msg("Failed starting OpenVPN tunnel! " + errorSuffix)
 	}
 }
 
@@ -230,7 +229,7 @@ func SAMLServer(handle *serveHandle) func(http.ResponseWriter, *http.Request) {
 			fmt.Fprintf(w, "Got SAMLResponse field, it is now safe to close this window\n")
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
-			fmt.Fprintf(w, "Error: POST method expected, %s recieved\n", r.Method)
+			fmt.Fprintf(w, "Error: POST method expected, %s received\n", r.Method)
 		}
 	}
 }

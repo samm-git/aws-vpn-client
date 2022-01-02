@@ -15,7 +15,7 @@ func setupAction(c *cli.Context) error {
 
 	// TODO: Remove me when Windows has been fully supported and tested.
 	if runtime.GOOS == "windows" {
-		log.Fatal().Msg("Detected windows enviroment! This operation is not properly developed to execute for Windows. Please manually build openvpn using the provided ruby script." + errorSuffix)
+		log.Fatal().Msg("Detected windows environment! This operation is not properly developed to execute for Windows. Please manually build openvpn using the provided ruby script." + errorSuffix)
 	}
 
 	// Make sure all required commands are installed on the system.
