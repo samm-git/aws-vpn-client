@@ -1,0 +1,9 @@
+vpn:
+  openvpn: /home/myname/aws-vpn-client/openvpn
+  port: 1194
+  shell: /bin/sh
+  sudo: /usr/bin/sudo
+  shellargs:
+    - "-c"
+server:
+  addr: "127.0.0.1:35001"
