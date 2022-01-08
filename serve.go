@@ -176,9 +176,10 @@ func startOpenVPNConnection(handle *serveHandle) {
 		baseCommand.Stderr = os.Stderr
 		baseCommand.Stdin = os.Stdin
 
-		err = baseCommand.Start()
-
 		log.Debug().Str("command", baseCommand.String()).Msg("Executing OpenVPN tunnel.")
+
+		err = baseCommand.Start()
+		baseCommand.Wait()
 	} else {
 
 		args := append(handle.Config.Vpn.ShellArgs, handle.Config.Vpn.Sudo+" "+baseCommand.String())
@@ -196,6 +197,8 @@ func startOpenVPNConnection(handle *serveHandle) {
 		log.Debug().Str("command", shellCommand.String()).Msg("Executing OpenVPN tunnel in shell.")
 
 		err = shellCommand.Start()
+
+		shellCommand.Wait()
 	}
 
 	if err != nil {
