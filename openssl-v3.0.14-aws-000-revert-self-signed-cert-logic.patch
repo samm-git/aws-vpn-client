@@ -1,0 +1,14 @@
+diff --git a/openssl/crypto/x509/v3_purp.c b/openssl/crypto/x509/v3_purp.c
+index 6461189..b2bc410 100644
+--- a/openssl/crypto/x509/v3_purp.c
++++ b/openssl/crypto/x509/v3_purp.c
+@@ -555,8 +555,7 @@ int ossl_x509v3_cache_extensions(X509 *x)
+     if (X509_NAME_cmp(X509_get_subject_name(x), X509_get_issuer_name(x)) == 0) {
+         x->ex_flags |= EXFLAG_SI; /* Cert is self-issued */
+         if (X509_check_akid(x, x->akid) == X509_V_OK /* SKID matches AKID */
+-                /* .. and the signature alg matches the PUBKEY alg: */
+-                && check_sig_alg_match(X509_get0_pubkey(x), x) == X509_V_OK)
++                && !ku_reject(x, KU_KEY_CERT_SIGN))
+             x->ex_flags |= EXFLAG_SS; /* indicate self-signed */
+         /* This is very related to ossl_x509_likely_issued(x, x) == X509_V_OK */
+     }
