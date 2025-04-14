@@ -1,0 +1,231 @@
+Only in a/src/openvpn/: argv.o
+Only in a/src/openvpn/: auth_token.o
+Only in a/src/openvpn/: base64.o
+diff --color -bur a/src/openvpn/buffer.h b/src/openvpn/buffer.h
+--- a/src/openvpn/buffer.h	2025-04-14 14:05:29.263760185 +0200
++++ b/src/openvpn/buffer.h	2025-04-14 14:05:14.988025875 +0200
+@@ -27,7 +27,7 @@
+ #include "basic.h"
+ #include "error.h"
+ 
+-#define BUF_SIZE_MAX 1 << 21
++#define BUF_SIZE_MAX 1000000
+ 
+ /*
+  * Define verify_align function, otherwise
+Only in a/src/openvpn/: buffer.o
+Only in a/src/openvpn/: clinat.o
+diff --color -bur a/src/openvpn/common.h b/src/openvpn/common.h
+--- a/src/openvpn/common.h	2025-04-14 14:05:29.263760185 +0200
++++ b/src/openvpn/common.h	2025-04-14 14:05:14.988025875 +0200
+@@ -66,7 +66,7 @@
+  * maximum size of a single TLS message (cleartext).
+  * This parameter must be >= PUSH_BUNDLE_SIZE
+  */
+-#define TLS_CHANNEL_BUF_SIZE 1 << 18
++#define TLS_CHANNEL_BUF_SIZE 2048
+ 
+ /* TLS control buffer minimum size
+  *
+Only in a/src/openvpn/: comp-lz4.o
+Only in a/src/openvpn/: comp.o
+Only in a/src/openvpn/: compstub.o
+Only in a/src/openvpn/: console_builtin.o
+Only in a/src/openvpn/: console.o
+Only in a/src/openvpn/: console_systemd.o
+Only in a/src/openvpn/: cryptoapi.o
+Only in a/src/openvpn/: crypto_mbedtls.o
+Only in a/src/openvpn/: crypto.o
+Only in a/src/openvpn/: crypto_openssl.o
+Only in a/src/openvpn/: dco_freebsd.o
+Only in a/src/openvpn/: dco_linux.o
+Only in a/src/openvpn/: dco.o
+Only in a/src/openvpn/: dco_win.o
+Only in a/src/openvpn/: .deps
+Only in a/src/openvpn/: dhcp.o
+Only in a/src/openvpn/: dns.o
+Only in a/src/openvpn/: env_set.o
+diff --color -bur a/src/openvpn/error.h b/src/openvpn/error.h
+--- a/src/openvpn/error.h	2025-04-14 14:05:29.263760185 +0200
++++ b/src/openvpn/error.h	2025-04-14 14:05:14.988025875 +0200
+@@ -34,7 +34,7 @@
+ #if defined(ENABLE_PKCS11) || defined(ENABLE_MANAGEMENT)
+ #define ERR_BUF_SIZE 10240
+ #else
+-#define ERR_BUF_SIZE 1 << 18
++#define ERR_BUF_SIZE 1280
+ #endif
+ 
+ struct gc_arena;
+Only in a/src/openvpn/: error.o
+Only in a/src/openvpn/: event.o
+Only in a/src/openvpn/: fdmisc.o
+Only in a/src/openvpn/: forward.o
+Only in a/src/openvpn/: fragment.o
+Only in a/src/openvpn/: gremlin.o
+Only in a/src/openvpn/: helper.o
+Only in a/src/openvpn/: httpdigest.o
+Only in a/src/openvpn/: init.o
+Only in a/src/openvpn/: interval.o
+Only in a/src/openvpn/: .libs
+Only in a/src/openvpn/: list.o
+Only in a/src/openvpn/: lladdr.o
+Only in a/src/openvpn/: lzo.o
+Only in a/src/openvpn/: Makefile
+diff --color -bur a/src/openvpn/manage.c b/src/openvpn/manage.c
+--- a/src/openvpn/manage.c	2025-04-14 14:05:29.263760185 +0200
++++ b/src/openvpn/manage.c	2025-04-14 14:05:14.988025875 +0200
+@@ -2245,7 +2245,7 @@
+     /*
+      * read command line from socket
+      */
+-    unsigned char buf[MANAGEMENT_SOCKET_READ_BUFFER_SIZE];
++    unsigned char buf[256];
+     int len = 0;
+ 
+ #ifdef TARGET_ANDROID
+@@ -2581,7 +2581,7 @@
+          * Allocate helper objects for command line input and
+          * command output from/to the socket.
+          */
+-        man->connection.in = command_line_new(COMMAND_LINE_OPTION_BUFFER_SIZE);
++        man->connection.in = command_line_new(1024);
+         man->connection.out = buffer_list_new();
+ 
+         /*
+diff --color -bur a/src/openvpn/manage.h b/src/openvpn/manage.h
+--- a/src/openvpn/manage.h	2025-04-14 14:05:29.267760111 +0200
++++ b/src/openvpn/manage.h	2025-04-14 14:05:14.988025875 +0200
+@@ -58,9 +58,6 @@
+ #define MANAGEMENT_ECHO_BUFFER_SIZE           100
+ #define MANAGEMENT_STATE_BUFFER_SIZE          100
+ 
+-#define COMMAND_LINE_OPTION_BUFFER_SIZE OPTION_PARM_SIZE
+-#define MANAGEMENT_SOCKET_READ_BUFFER_SIZE OPTION_PARM_SIZE
+-
+ /*
+  * Management-interface-based deferred authentication
+  */
+Only in a/src/openvpn/: manage.o
+Only in a/src/openvpn/: mbuf.o
+diff --color -bur a/src/openvpn/misc.h b/src/openvpn/misc.h
+--- a/src/openvpn/misc.h	2025-04-14 14:05:29.267760111 +0200
++++ b/src/openvpn/misc.h	2025-04-14 14:05:14.988025875 +0200
+@@ -66,10 +66,7 @@
+ #ifdef ENABLE_PKCS11
+ #define USER_PASS_LEN 4096
+ #else
+-/*
+- * Increase the username and password length size to 128KB.
+- */
+-#define USER_PASS_LEN 1 << 17
++#define USER_PASS_LEN 128
+ #endif
+     /* Note that username and password are expected to be null-terminated */
+     char username[USER_PASS_LEN];
+Only in a/src/openvpn/: misc.h.orig
+Only in a/src/openvpn/: misc.o
+Only in a/src/openvpn/: mroute.o
+Only in a/src/openvpn/: mss.o
+Only in a/src/openvpn/: mstats.o
+Only in a/src/openvpn/: mtcp.o
+Only in a/src/openvpn/: mtu.o
+Only in a/src/openvpn/: mudp.o
+Only in a/src/openvpn/: multi.o
+Only in a/src/openvpn/: networking_freebsd.o
+Only in a/src/openvpn/: networking_iproute2.o
+Only in a/src/openvpn/: networking_sitnl.o
+Only in a/src/openvpn/: ntlm.o
+Only in a/src/openvpn/: occ.o
+Only in a/src/openvpn/: openvpn
+Only in a/src/openvpn/: openvpn.o
+diff --color -bur a/src/openvpn/options.h b/src/openvpn/options.h
+--- a/src/openvpn/options.h	2025-04-14 14:05:29.267760111 +0200
++++ b/src/openvpn/options.h	2025-04-14 14:05:14.992025801 +0200
+@@ -54,8 +54,8 @@
+ /*
+  * Max size of options line and parameter.
+  */
+-#define OPTION_PARM_SIZE USER_PASS_LEN
+-#define OPTION_LINE_SIZE OPTION_PARM_SIZE
++#define OPTION_PARM_SIZE 256
++#define OPTION_LINE_SIZE 256
+ 
+ extern const char title_string[];
+ 
+Only in a/src/openvpn/: options.o
+Only in a/src/openvpn/: options_util.o
+Only in a/src/openvpn/: otime.o
+Only in a/src/openvpn/: packet_id.o
+Only in a/src/openvpn/: perf.o
+Only in a/src/openvpn/: ping.o
+Only in a/src/openvpn/: pkcs11_mbedtls.o
+Only in a/src/openvpn/: pkcs11.o
+Only in a/src/openvpn/: pkcs11_openssl.o
+Only in a/src/openvpn/: platform.o
+Only in a/src/openvpn/: plugin.o
+Only in a/src/openvpn/: pool.o
+Only in a/src/openvpn/: proto.o
+Only in a/src/openvpn/: proxy.o
+Only in a/src/openvpn/: ps.o
+Only in a/src/openvpn/: push.o
+Only in a/src/openvpn/: reflect_filter.o
+Only in a/src/openvpn/: reliable.o
+Only in a/src/openvpn/: route.o
+Only in a/src/openvpn/: run_command.o
+Only in a/src/openvpn/: schedule.o
+Only in a/src/openvpn/: session_id.o
+Only in a/src/openvpn/: shaper.o
+Only in a/src/openvpn/: sig.o
+Only in a/src/openvpn/: socket.o
+Only in a/src/openvpn/: socks.o
+diff --color -bur a/src/openvpn/ssl.c b/src/openvpn/ssl.c
+--- a/src/openvpn/ssl.c	2025-04-14 14:05:29.267760111 +0200
++++ b/src/openvpn/ssl.c	2025-04-14 14:05:14.992025801 +0200
+@@ -1951,7 +1951,7 @@
+ static bool
+ write_empty_string(struct buffer *buf)
+ {
+-    if (!buf_write_u32(buf, 0))
++    if (!buf_write_u16(buf, 0))
+     {
+         return false;
+     }
+@@ -1966,7 +1966,7 @@
+     {
+         return false;
+     }
+-    if (!buf_write_u32(buf, len))
++    if (!buf_write_u16(buf, len))
+     {
+         return false;
+     }
+@@ -2327,10 +2327,6 @@
+         p2p_mode_ncp(multi, session);
+     }
+ 
+-    // Write key length in the first 4 octets of the buffer.
+-    uint32_t length = BLEN(buf);
+-    memcpy(buf->data, &length, sizeof(length));
+-
+     return true;
+ 
+ error:
+Only in a/src/openvpn/: ssl.c.orig
+Only in a/src/openvpn/: ssl_mbedtls.o
+Only in a/src/openvpn/: ssl_ncp.o
+Only in a/src/openvpn/: ssl.o
+Only in a/src/openvpn/: ssl_openssl.o
+Only in a/src/openvpn/: ssl_pkt.o
+Only in a/src/openvpn/: ssl_util.o
+Only in a/src/openvpn/: ssl_verify_mbedtls.o
+Only in a/src/openvpn/: ssl_verify.o
+Only in a/src/openvpn/: ssl_verify_openssl.o
+Only in a/src/openvpn/: status.o
+Only in a/src/openvpn/: tls_crypt.o
+Only in a/src/openvpn/: tun.o
+Only in a/src/openvpn/: vlan.o
+Only in a/src/openvpn/: win32.o
+Only in a/src/openvpn/: win32-util.o
+Only in a/src/openvpn/: xkey_helper.o
+Only in a/src/openvpn/: xkey_provider.o

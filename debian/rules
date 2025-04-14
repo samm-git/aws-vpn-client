@@ -4,7 +4,7 @@
 	dh $@
 
 override_dh_auto_build:
-	bash debian/bin/build_openvpn.sh 2.6.12
+	bash debian/bin/build_openvpn.sh 2.6.14
 	bash debian/bin/build_go_server.sh
 
 override_dh_strip:
