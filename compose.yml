@@ -1,0 +1,11 @@
+services:
+  vpn-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: no
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+    cap_add:
+      - NET_ADMIN
+    network_mode: host
