@@ -1,3 +1,6 @@
+# Project status
+> :warning: **Project is migrated** to the [aws-vpn-client/aws-vpn-client](https://github.com/aws-vpn-client/aws-vpn-client). This repository will not be updated!
+ 
 # aws-vpn-client
 
 This is PoC to connect to the AWS Client VPN with OSS OpenVPN using SAML
